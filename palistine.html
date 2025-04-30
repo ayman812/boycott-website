@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Boycott Checker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      text-align: center;
+      padding: 60px 20px;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #ff4444;
+      text-shadow: 0 0 10px #ff4444, 0 0 20px #ff0000;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #ff4444, 0 0 20px #ff0000;
+      }
+      to {
+        text-shadow: 0 0 20px #ff7777, 0 0 40px #ff2222;
+      }
+    }
+
+    #animation-container {
+      width: 300px;
+      height: 300px;
+      margin: 30px auto;
+      border-radius: 20px;
+      box-shadow: 0 0 30px #e60000;
+    }
+
+    input {
+      padding: 12px 20px;
+      font-size: 18px;
+      width: 300px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 20px;
+      outline: none;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      background-color: #222;
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      box-shadow: 0 0 20px #00ff88;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 18px;
+      margin-left: 10px;
+      background: linear-gradient(45deg, #e60000, #ff4444);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #e60000;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #ff0000;
+    }
+
+    .result {
+      margin-top: 40px;
+      font-size: 26px;
+      font-weight: bold;
+      text-shadow: 0 0 5px #fff;
+    }
+
+    .boycotted {
+      color: #ff3333;
+      text-shadow: 0 0 10px #ff0000;
+    }
+
+    .not-boycotted {
+      color: #00ff88;
+      text-shadow: 0 0 10px #00ff88;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    /* New Max Pro Animation - Extra Background Animation */
+    .max-pro-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 0, 0, 0.5) 20%, transparent 50%);
+      background-size: 200% 200%;
+      animation: pulseBackground 4s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes pulseBackground {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 100%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🛑 Product Boycott Checker</h1>
+  <p>Enter a product or brand name to check if it's boycotted.</p>
+
+  <!-- Lottie Animation -->
+
+
+  <!-- Input + Button -->
+  <input type="text" id="productInput" placeholder="e.g. Starbucks, HP">
+  <button onclick="checkBoycott()">Check</button>
+
+  <!-- Result -->
+  <div class="result" id="resultBox"></div>
+
+  <footer>
+    Powered by People ✊ | Free Palestine 🇵🇸
+  </footer>
+
+  <!-- Max Pro Background Animation -->
+  <div class="max-pro-bg"></div>
+
+  <!-- Lottie Script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.6/lottie.min.js"></script>
+  <script>
+    // Load animation for Lottie
+    lottie.loadAnimation({
+      container: document.getElementById('animation-container'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://lottie.host/84c12038-1893-4683-9442-cab3b6aa097b/ck8rzBfVnx.json' // Replace with your custom animation JSON path
+    });
+
+    // Product Check Logic
+    const boycottedBrands = [
+  'starbucks', 'mcdonalds', 'nestle', 'cocacola', 'pepsi', 
+  'hp', 'intel', 'puma', 'netflix', 'walmart', 
+  'burger king', 'dominos', 'axe', 'magnum', 'dove', 'disney', 
+  'adidas', 'nike', 'loreal', 'toyota', 'ford', 
+  'samsung', 'apple', 'lg', 'microsoft', 'volkswagen', 
+  'bp', 'shell', 'exxon', 'chevron', 'total', 
+  'h&m', 'zara', 'ikea', 'walt disney', 'mattel', 
+  'pepsico', 'kraft', 'unilever', 'colgate', 'tata', 
+  'verizon', 't-mobile', 'at&t', 'sprint', 'vodafone', 
+  'caterpillar', 'john deere', '3m', 'gillette', 'dell', 
+  'bayer', 'monsanto', 'citi', 'chase', 'bank of america', 
+  'american express', 'visa', 'mastercard', 'paypal', 'allianz', 
+  'deutsche bank', 'goldman sachs', 'jpmorgan', 'barclays', 'hsbc', 
+  'audi', 'mercedes benz', 'bmw', 'jeep', 'chrysler', 
+  'renault', 'peugeot', 'citroen', 'fiat', 'mitsubishi', 
+  'kia', 'hyundai', 'mazda', 'subaru', 'nissan', 
+  'honda', 'lexus', 'acura', 'cadillac', 'buick', 
+  'gm', 'chrysler', 'ford', 'toyota', 'mitsubishi', 
+  'ferrari', 'lamborghini', 'porsche', 'bugatti', 'rolls-royce', 
+  'aston martin', 'mclaren', 'tesla', 'volvo', 'pagani', 
+  'tata', 'fiat', 'alfa romeo', 'peugeot', 'chrysler', 
+  'tesla', 'ford', 'gm', 'renault', 'volkswagen', 
+  'ford', 'mazda', 'mitsubishi', 'honda', 'hyundai', 
+  'kia', 'volvo', 'audi', 'subaru', 'chevrolet', 
+  'gmc', 'jeep', 'toyota', 'nissan', 'bmw', 
+  'fiat', 'land rover', 'jaguar', 'chrysler', 'mercedes', 
+  'porsche', 'mercedes-benz', 'bmw', 'audi', 'toyota', 
+  'ferrari', 'lamborghini', 'mclaren', 'bugatti', 'porsche', 
+  'peugeot', 'suzuki', 'skoda', 'citroen', 'renault', 
+  'fiat', 'opel', 'chrysler', 'ford', 'subaru', 
+  'mercedes', 'bmw', 'jeep', 'chevrolet', 'volkswagen', 
+  'lamborghini', 'bugatti', 'porsche', 'fiat', 'peugeot', 
+  'ford', 'jeep', 'subaru', 'land rover', 'jaguar', 
+  'chrysler', 'audi', 'toyota', 'nissan', 'mazda', 
+  'peugeot', 'hyundai', 'honda', 'mitsubishi', 'renault', 
+  'kia', 'volvo', 'tesla', 'mercedes-benz', 'bmw', 
+  'fiat', 'chrysler', 'land rover', 'ford', 'chevrolet',
+  'burberry', 'gucci', 'prada', 'chanel', 'louis vuitton', 
+  'fendi', 'dolce and gabbana', 'hermes', 'cartier', 'tiffany', 
+  'ralph lauren', 'calvin klein', 'tommy hilfiger', 'versace', 'armani', 
+  'saint laurent', 'louis vuitton', 'coach', 'lancel', 'longchamp', 
+  'marc jacobs', 'givenchy', 'balenciaga', 'chloe', 'vuitton', 
+  'hermes', 'puma', 'nike', 'adidas', 'reebok', 
+  'under armour', 'new balance', 'saucony', 'asics', 'converse', 
+  'vans', 'lacoste', 'le coq sportif', 'champion', 'nike', 
+  'fitbit', 'garmin', 'polar', 'suunto', 'tomtom', 
+  'samsung', 'apple', 'microsoft', 'lenovo', 'asus', 
+  'dell', 'hp', 'acer', 'toshiba', 'gateway', 
+  'zara', 'h&m', 'uniqlo', 'forever 21', 'express', 
+  'mango', 'american eagle', 'aeropostale', 'pacsun', 'victoria secret', 
+  'bath and body works', 'the body shop', 'lush', 'sephora', 'ulta', 
+  'kylie cosmetics', 'anastasia beverly hills', 'tarte', 'morphe', 'fenty beauty', 
+  'maybelline', 'covergirl', 'revlon', 'max factor', 'loreal', 
+  'too faced', 'urban decay', 'maci', 'sally beauty', 'sephora', 
+  'l’oreal', 'clarins', 'estee lauder', 'clinique', 'olay', 
+  'neutrogena', 'nivea', 'johnson and johnson', 'procter and gamble', 'colgate', 
+  'garnier', 'olay', 'dove', 'axe', 'swiffer', 
+  'vicks', 'head and shoulders', 'pantene', 'herbal essences', 'gillette', 
+  'old spice', 'head and shoulders', 'febreze', 'tide', 'charmin',
+  'quaker oats', 'jimmy dean', 'hormel', 'heinz', 'kraft', 
+  'oscar mayer', 'best foods', 'hellmann’s', 'tabasco', 'campbell soup', 
+  'general mills', 'kellogg’s', 'hormel', 'coca cola', 'pepsi', 
+  'unilever', 'procter and gamble', 'colgate-palmolive', 'kraft-heinz', 'mars', 
+  'nestle', 'barilla', 'crocs', 'tupperware', 'libbey', 
+  'kitchen aid', 'villeroy boch', 'corelle', 'pyrex', 'denby', 
+  'oxo', 'rubbermaid', 'sterilite', 'ziploc', 'scotch', 
+  'dish soap', 'clorox', 'bleach', 'listerine', 'mop', 
+  'swiffer', 'detergent', 'arm and hammer', 'tide', 'purex', 
+  'gain', 'dreft', 'lunchables', 'pop tarts', 'lucky charms', 'cheerios', 
+  'snickers', 'mars', 'twix', 'kit kat', 'm&ms', 'skittles', 
+  'wrigley’s', 'extra gum', 'doublemint', 'juicy fruit', 'orbit gum', 
+  'dove', 'ben & jerry’s', 'breyers', 'edys', 'haagen dazs', 
+  'yum brands', 'taco bell', 'pizza hut', 'kfc', 'papa john’s', 
+  'domino’s', 'chick-fil-a', 'panda express', 'subway', 'arby’s', 
+  'jack in the box', 'tgi fridays', 'applebees', 'the cheesecake factory', 
+  'red robin', 'buffalo wild wings', 'starbucks', 'tim hortons', 'dunkin donuts'
+];
+
+    function checkBoycott() {
+      const input = document.getElementById("productInput").value.trim().toLowerCase();
+      const resultBox = document.getElementById("resultBox");
+
+      if (!input) {
+        resultBox.innerHTML = 'Please enter a product or brand name.';
+        resultBox.className = 'result';
+        return;
+      }
+
+      if (boycottedBrands.includes(input)) {
+        resultBox.innerHTML = `${capitalize(input)} is <span class="boycotted">boycotted 🚫</span>`;
+        resultBox.className = 'result boycotted';
+      } else {
+        resultBox.innerHTML = `${capitalize(input)} is <span class="not-boycotted">not boycotted ✅</span>`;
+        resultBox.className = 'result not-boycotted';
+      }
+    }
+
+    function capitalize(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+  </script>
+
+</body>
+</html>
